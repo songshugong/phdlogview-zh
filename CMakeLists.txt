@@ -1,26 +1,26 @@
 #
 #  This file is part of phdlogview
-# 
+#
 #  Copyright (C) 2016 Andy Galasso
-# 
+#
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 3 of the License, or
 #  (at your option) any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-# 
+#
 #  You should have received a copy of the GNU General Public License along
 #  with this program; if not, visit the http://fsf.org website.
 
 cmake_minimum_required (VERSION 3.24)
 
 # this must appear very early in the file
-if (WIN32)
-  set(CMAKE_GENERATOR_TOOLSET "v120_xp" CACHE STRING "Platform Toolset" FORCE)
+if (WINDOWS)
+  set(CMAKE_GENERATOR "Visual Studio 17" CACHE STRING INTERNAL "" FORCE)
 endif()
 
 if(COMMAND cmake_policy)
@@ -49,9 +49,9 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_definitions(-D_USE_MATH_DEFINES)
 
-if (WIN32)
-  set(FIND_LIBRARY_USE_LIB64_PATHS FALSE)
-endif()
+#if (WIN32)
+#  set(FIND_LIBRARY_USE_LIB64_PATHS FALSE)
+#endif()
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Setting build type to 'Release' as none was specified.")
@@ -67,8 +67,13 @@ include(CheckCXXCompilerFlag)
 #
 # general defines
 if(WIN32)
-  set(FIND_LIBRARY_USE_LIB64_PATHS FALSE)
-  #set(CMAKE_LIBRARY_ARCHITECTURE x86)
+
+  if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
+    set(WINDOWS_ARCH "x64")
+  else()
+    set(WINDOWS_ARCH "x86")
+  endif()
+
 elseif(NOT APPLE)
   # c++11 options
   check_cxx_compiler_flag(-std=c++11 HAS_CXX11_FLAG)
@@ -84,17 +89,24 @@ endif()
 
 if(WIN32)
   # wxWidgets
-  set(wxWidgets_CONFIGURATION msw)
 
-  set (WXWIN "C:\\wxWidgets-3.0.4")
-  if(NOT WXWIN OR NOT EXISTS ${WXWIN})
+  set(wxWidgets_PREFIX_DIRECTORY $ENV{WXWIN} CACHE PATH "wxWidgets directory")
+
+  if(NOT wxWidgets_PREFIX_DIRECTORY OR NOT EXISTS ${wxWidgets_PREFIX_DIRECTORY})
     message(FATAL_ERROR "The variable WXWIN should be defined and should point to a valid wxWindows installation path.")
   endif()
-  
-  set(wxWidgets_ROOT_DIR ${WXWIN})
+
+  set(wxWidgets_CONFIGURATION msw CACHE STRING "Set wxWidgets configuration")
+
+  set(wxWidgets_ROOT_DIR ${wxWidgets_PREFIX_DIRECTORY})
+  if(WINDOWS_ARCH STREQUAL "x64")
+    set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_x64_lib)
+  else()
+    set(wxWidgets_LIB_DIR ${wxWidgets_ROOT_DIR}/lib/vc_lib)
+  endif()
   set(wxWidgets_USE_STATIC ON)
   set(wxWidgets_USE_DEBUG OFF)
-  set(wxWidgets_USE_UNICODE ON)
+  set(wxWidgets_USE_UNICODE OFF)
   find_package(wxWidgets REQUIRED COMPONENTS propgrid base core aui adv html net)
   include(${wxWidgets_USE_FILE})
   message(${wxWidgets_USE_FILE})

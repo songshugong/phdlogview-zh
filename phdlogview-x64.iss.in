@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PHD2 Log Viewer"
-#define MyAppVersion "0.6.4"
+#define MyAppVersion "@VERSION@"
 #define MyAppPublisher "Andy Galasso"
 #define MyAppURL "https://adgsoftware.com/phd2utils/"
 #define MyAppExeName "phdlogview.exe"
@@ -22,8 +22,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=tmp\Release\LICENSE.txt
-OutputDir=tmp
+LicenseFile=Release\LICENSE.txt
+OutputDir=.
 OutputBaseFilename=phdlogview_setup-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
@@ -35,14 +35,14 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "tmp\Release\phdlogview.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "tmp\Release\cblas.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "tmp\Release\gsl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "tmp\Release\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "tmp\Release\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "tmp\Release\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "tmp\Release\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "tmp\Release\README.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\phdlogview.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\cblas.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\gsl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\README.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
