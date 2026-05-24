@@ -1,3 +1,7 @@
+Version 0.6.5 - 24 May 2026
+        * compute elongation statistic and display ellipse in scatter plot
+        * exclude star-lost frames from scatter plot and stats
+
 Version 0.6.4 - 12 Jan 2020
         * Fix problem with log section grid scrollbars sometimes missing
         * Fix location of right-click popup menu

@@ -53,7 +53,7 @@
 #define MIN_SHOW 25
 
 #define APP_NAME "PHD2 Log Viewer"
-#define APP_VERSION_STR "0.6.4"
+#define APP_VERSION_STR "0.6.5"
 
 PointArray s_tmp;
 Settings s_settings;
