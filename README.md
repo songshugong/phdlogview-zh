@@ -8,9 +8,9 @@ This standalone branch adds built-in Simplified Chinese localization while keepi
 
 Release binaries will be published separately for each operating system:
 
-- Windows: TODO_DOWNLOAD_LINK_WINDOWS
-- macOS: TODO_DOWNLOAD_LINK_MACOS
-- Linux: TODO_DOWNLOAD_LINK_LINUX
+- Windows: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-windows-x86_64.zip
+- macOS: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64-local.zip
+- Linux: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-x86_64.tar.gz
 
 ## Build
 
@@ -37,9 +37,9 @@ PHD2 Log Viewer 是用于查看和分析 PHD2 导星日志的桌面工具，可�
 
 正式构建文件会按系统分别发布：
 
-- Windows：TODO_DOWNLOAD_LINK_WINDOWS
-- macOS：TODO_DOWNLOAD_LINK_MACOS
-- Linux：TODO_DOWNLOAD_LINK_LINUX
+- Windows：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-windows-x86_64.zip
+- macOS：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64-local.zip
+- Linux：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-x86_64.tar.gz
 
 ## 构建
 

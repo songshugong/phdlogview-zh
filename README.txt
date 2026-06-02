@@ -7,9 +7,9 @@ This build includes built-in Simplified Chinese localization. English
 and French remain available from the Language menu.
 
 Download placeholders:
-Windows: TODO_DOWNLOAD_LINK_WINDOWS
-macOS: TODO_DOWNLOAD_LINK_MACOS
-Linux: TODO_DOWNLOAD_LINK_LINUX
+Windows: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-windows-x86_64.zip
+macOS: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64-local.zip
+Linux: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-x86_64.tar.gz
 
 Open the Quick Help item on the Help menu to get a brief description of
 how to navigate the log with the mouse.
@@ -22,8 +22,8 @@ PHD2 Log Viewer 用于快速查看和分析 PHD2 导星日志，帮助发现导�
 此版本包含内置简体中文界面，也可以在“语言”菜单中切换到英文或法文。
 
 下载链接占位：
-Windows：TODO_DOWNLOAD_LINK_WINDOWS
-macOS：TODO_DOWNLOAD_LINK_MACOS
-Linux：TODO_DOWNLOAD_LINK_LINUX
+Windows：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-windows-x86_64.zip
+macOS：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64-local.zip
+Linux：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-x86_64.tar.gz
 
 Andy Galasso <andy.galasso@gmail.com>

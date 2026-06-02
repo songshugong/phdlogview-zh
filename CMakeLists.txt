@@ -66,7 +66,7 @@ include(CheckCXXCompilerFlag)
 #################################################################################
 #
 # general defines
-if(WIN32)
+if(WIN32 AND NOT MINGW)
 
   if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
     set(WINDOWS_ARCH "x64")
@@ -87,7 +87,13 @@ elseif(NOT APPLE)
 
 endif()
 
-if(WIN32)
+if(WIN32 AND MINGW)
+  find_package(wxWidgets REQUIRED COMPONENTS aui core base adv html net)
+  if(NOT wxWidgets_FOUND)
+    message(FATAL_ERROR "WxWidget cannot be found.")
+  endif()
+  include(${wxWidgets_USE_FILE})
+elseif(WIN32)
   # wxWidgets
 
   set(wxWidgets_PREFIX_DIRECTORY $ENV{WXWIN} CACHE PATH "wxWidgets directory")
@@ -203,7 +209,10 @@ elseif(UNIX)
 endif()
 
 # ===== GSL =====
-if(WIN32)
+if(WIN32 AND MINGW)
+  find_package(GSL REQUIRED)
+  target_link_libraries(phdlogview GSL::gsl GSL::gslcblas)
+elseif(WIN32)
   set(gsl_ver "2.4.0.8788")
   set(gsl_dir ${CMAKE_BINARY_DIR}/gsl-msvc-x86.${gsl_ver})
   if(NOT EXISTS ${gsl_dir})
