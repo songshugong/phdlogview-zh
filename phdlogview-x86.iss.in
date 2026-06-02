@@ -43,6 +43,7 @@ Source: "Release\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Release\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Release\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Release\README.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Release\languages\*"; DestDir: "{app}\languages"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

@@ -1,0 +1,3 @@
+name=Français
+code=fr
+note=Interface, champs de journal et événements intégrés en français.

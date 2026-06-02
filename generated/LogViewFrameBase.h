@@ -66,8 +66,8 @@ class LogViewFrameBase : public wxFrame
 		wxButton* m_vplus;
 		wxButton* m_vminus;
 		wxButton* m_vreset;
-		wxToggleButton* m_vpan;
-		wxToggleButton* m_vlock;
+		wxButton* m_vpan;
+		wxButton* m_vlock;
 		wxBoxSizer* m_guideControlsSizer;
 		wxRadioBox* m_device;
 		wxRadioBox* m_units;
@@ -138,7 +138,7 @@ class HelpDialogBase : public wxDialog
 	
 	public:
 		
-		HelpDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("PHD Log Viewer Quick Help"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 567,523 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER ); 
+		HelpDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("PHD 日志查看器快速帮助"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 567,523 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~HelpDialogBase();
 	
 };
@@ -169,7 +169,7 @@ class SettingsDialogBase : public wxDialog
 		wxButton* m_raColorBtn;
 		wxButton* m_decColorBtn;
 		
-		SettingsDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE ); 
+		SettingsDialogBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("设置"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
 		~SettingsDialogBase();
 	
 };
@@ -217,7 +217,7 @@ class AnalyzeFrameBase : public wxFrame
 		wxCheckBox* m_ra;
 		wxCheckBox* m_dec;
 		
-		AnalyzeFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Analysis"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 949,540 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		AnalyzeFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("分析"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 949,540 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~AnalyzeFrameBase();
 	

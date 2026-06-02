@@ -42,6 +42,8 @@ class LogViewFrame : public LogViewFrameBase
     GuideSession *m_session;
     Calibration *m_calibration;
     wxTimer m_timer;
+    bool m_vpanActive;
+    bool m_vlockActive;
 
 public:
     AnalysisWin *m_analysisWin;
@@ -50,6 +52,7 @@ public:
     LogViewFrame();
     ~LogViewFrame();
     void OpenLog(const wxString& filename);
+    wxString CurrentLogFile() const { return m_filename; }
     bool ArcsecsSelected() const;
 
 private:

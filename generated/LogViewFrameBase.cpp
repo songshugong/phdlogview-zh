@@ -6,6 +6,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 #include "LogViewFrameBase.h"
+#include "localization.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -32,7 +33,7 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	wxPanel* panel7;
 	panel7 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxStaticBoxSizer* sbSizer1;
-	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( panel7, wxID_ANY, wxT("Log sections") ), wxHORIZONTAL );
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( panel7, wxID_ANY, L10n("日志片段", "Log sections", "Sections du journal") ), wxHORIZONTAL );
 	
 	m_sessions = new wxGrid( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxSize( -1,-1 ), wxBORDER_STATIC );
 	
@@ -77,7 +78,7 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	wxPanel* panel8;
 	panel8 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxStaticBoxSizer* sbSizer2;
-	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( panel8, wxID_ANY, wxT("Section heading") ), wxVERTICAL );
+	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( panel8, wxID_ANY, L10n("片段信息", "Section heading", "Informations de section") ), wxVERTICAL );
 	
 	m_sessionInfo = new wxTextCtrl( sbSizer2->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY );
 	m_sessionInfo->SetFont( wxFont( 8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Arial") ) );
@@ -144,27 +145,27 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	
 	m_hminus = new wxButton( panel6, wxID_ANY, wxT("-"), wxDefaultPosition, wxSize( 30,-1 ), 0 );
 	m_hminus->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
-	m_hminus->SetToolTip( wxT("Zoom out") );
+	m_hminus->SetToolTip( wxT("缩小") );
 	
 	bSizer5->Add( m_hminus, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_hplus = new wxButton( panel6, wxID_ANY, wxT("+"), wxDefaultPosition, wxSize( 30,-1 ), 0 );
 	m_hplus->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
-	m_hplus->SetToolTip( wxT("Zoom in") );
+	m_hplus->SetToolTip( wxT("放大") );
 	
 	bSizer5->Add( m_hplus, 0, wxALL, 5 );
 	
 	m_hreset = new wxButton( panel6, wxID_ANY, wxT("R"), wxDefaultPosition, wxSize( 30,-1 ), 0 );
 	m_hreset->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
-	m_hreset->SetToolTip( wxT("Reset zoom") );
+	m_hreset->SetToolTip( wxT("重置缩放") );
 	
 	bSizer5->Add( m_hreset, 0, wxALL, 5 );
 	
 	
 	bSizer5->Add( 0, 0, 1, wxEXPAND, 5 );
 	
-	m_launch = new wxButton( panel6, wxID_ANY, wxT("Text"), wxDefaultPosition, wxSize( 60,-1 ), 0 );
-	m_launch->SetToolTip( wxT("Open the log file in your text editor") );
+	m_launch = new wxButton( panel6, wxID_ANY, L10n("文本", "Text", "Texte"), wxDefaultPosition, wxSize( 60,-1 ), 0 );
+	m_launch->SetToolTip( wxT("用文本编辑器打开日志文件") );
 	
 	bSizer5->Add( m_launch, 0, wxALL, 5 );
 	
@@ -182,31 +183,31 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	
 	m_vplus = new wxButton( panel6, wxID_ANY, wxT("+"), wxDefaultPosition, wxSize( 30,25 ), 0 );
 	m_vplus->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
-	m_vplus->SetToolTip( wxT("Zoom in") );
+	m_vplus->SetToolTip( wxT("放大") );
 	
 	bSizer3->Add( m_vplus, 0, wxALL, 5 );
 	
 	m_vminus = new wxButton( panel6, wxID_ANY, wxT("-"), wxDefaultPosition, wxSize( 30,25 ), 0 );
 	m_vminus->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
-	m_vminus->SetToolTip( wxT("Zoom out") );
+	m_vminus->SetToolTip( wxT("缩小") );
 	
 	bSizer3->Add( m_vminus, 0, wxALL, 5 );
 	
 	m_vreset = new wxButton( panel6, wxID_ANY, wxT("R"), wxDefaultPosition, wxSize( 30,25 ), 0 );
 	m_vreset->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNTEXT ) );
-	m_vreset->SetToolTip( wxT("Reset zoom") );
+	m_vreset->SetToolTip( wxT("重置缩放") );
 	
 	bSizer3->Add( m_vreset, 0, wxALL, 5 );
 	
-	m_vpan = new wxToggleButton( panel6, wxID_ANY, wxT("P/&Z"), wxDefaultPosition, wxSize( 30,25 ), 0 );
+	m_vpan = new wxButton( panel6, wxID_ANY, wxT("P/Z"), wxDefaultPosition, wxSize( 30,25 ), 0 );
 	m_vpan->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
-	m_vpan->SetToolTip( wxT("Pan / Zoom") );
+	m_vpan->SetToolTip( wxT("平移 / 缩放") );
 	
 	bSizer3->Add( m_vpan, 0, wxALL, 5 );
 	
-	m_vlock = new wxToggleButton( panel6, wxID_ANY, wxT("L"), wxDefaultPosition, wxSize( 30,25 ), 0 );
+	m_vlock = new wxButton( panel6, wxID_ANY, wxT("L"), wxDefaultPosition, wxSize( 30,25 ), 0 );
 	m_vlock->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
-	m_vlock->SetToolTip( wxT("Lock vertical scale, use the same scale for all guiding sessions") );
+	m_vlock->SetToolTip( wxT("锁定垂直比例：所有导星片段使用相同刻度") );
 	
 	bSizer3->Add( m_vlock, 0, wxALL, 5 );
 	
@@ -222,44 +223,44 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	m_guideControlsSizer = new wxBoxSizer( wxHORIZONTAL );
 	
 	wxStaticBoxSizer* sbSizer4;
-	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( panel6, wxID_ANY, wxT("Plot options") ), wxHORIZONTAL );
+	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( panel6, wxID_ANY, L10n("绘图选项", "Plot options", "Options du graphique") ), wxHORIZONTAL );
 	
-	wxString m_deviceChoices[] = { wxT("Mount"), wxT("AO") };
+	wxString m_deviceChoices[] = { L10n("赤道仪", "Mount", "Monture"), wxT("AO") };
 	int m_deviceNChoices = sizeof( m_deviceChoices ) / sizeof( wxString );
-	m_device = new wxRadioBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Device"), wxDefaultPosition, wxDefaultSize, m_deviceNChoices, m_deviceChoices, 1, wxRA_SPECIFY_COLS );
+	m_device = new wxRadioBox( sbSizer4->GetStaticBox(), wxID_ANY, L10n("设备", "Device", "Périphérique"), wxDefaultPosition, wxDefaultSize, m_deviceNChoices, m_deviceChoices, 1, wxRA_SPECIFY_COLS );
 	m_device->SetSelection( 0 );
-	m_device->SetToolTip( wxT("Display corrections for this device") );
+	m_device->SetToolTip( wxT("显示此设备的修正量") );
 	
 	sbSizer4->Add( m_device, 0, wxALIGN_CENTER_VERTICAL|wxBOTTOM|wxLEFT|wxRIGHT, 5 );
 	
-	wxString m_unitsChoices[] = { wxT("arc-sec"), wxT("pixels") };
+	wxString m_unitsChoices[] = { L10n("角秒", "arc-sec", "arc-sec"), L10n("像素", "pixels", "pixels") };
 	int m_unitsNChoices = sizeof( m_unitsChoices ) / sizeof( wxString );
-	m_units = new wxRadioBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Units"), wxDefaultPosition, wxDefaultSize, m_unitsNChoices, m_unitsChoices, 1, wxRA_SPECIFY_COLS );
+	m_units = new wxRadioBox( sbSizer4->GetStaticBox(), wxID_ANY, L10n("单位", "Units", "Unités"), wxDefaultPosition, wxDefaultSize, m_unitsNChoices, m_unitsChoices, 1, wxRA_SPECIFY_COLS );
 	m_units->SetSelection( 0 );
-	m_units->SetToolTip( wxT("Vertical axis units") );
+	m_units->SetToolTip( wxT("纵轴单位") );
 	
 	sbSizer4->Add( m_units, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	wxString m_axesChoices[] = { wxT("RA/Dec"), wxT("dx/dy") };
 	int m_axesNChoices = sizeof( m_axesChoices ) / sizeof( wxString );
-	m_axes = new wxRadioBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Axes"), wxDefaultPosition, wxDefaultSize, m_axesNChoices, m_axesChoices, 1, wxRA_SPECIFY_COLS );
+	m_axes = new wxRadioBox( sbSizer4->GetStaticBox(), wxID_ANY, L10n("坐标轴", "Axes", "Axes"), wxDefaultPosition, wxDefaultSize, m_axesNChoices, m_axesChoices, 1, wxRA_SPECIFY_COLS );
 	m_axes->SetSelection( 0 );
-	m_axes->SetToolTip( wxT("Select camera axes (dx/dy) or Mount axes (RA/Dec)") );
+	m_axes->SetToolTip( wxT("选择相机坐标轴 dx/dy 或赤道仪坐标轴 RA/Dec") );
 	
 	sbSizer4->Add( m_axes, 0, wxALIGN_LEFT|wxALIGN_RIGHT|wxBOTTOM|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	wxBoxSizer* bSizer12;
 	bSizer12 = new wxBoxSizer( wxVERTICAL );
 	
-	m_corrections = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Corrections"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_corrections = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, L10n("修正量", "Corrections", "Corrections"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_corrections->SetValue(true); 
-	m_corrections->SetToolTip( wxT("Plot guide pulses") );
+	m_corrections->SetToolTip( wxT("绘制导星脉冲") );
 	
 	bSizer12->Add( m_corrections, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_grid = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Grid"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_grid = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, L10n("网格", "Grid", "Grille"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_grid->SetValue(true); 
-	m_grid->SetToolTip( wxT("Plot grid lines") );
+	m_grid->SetToolTip( wxT("绘制网格线") );
 	
 	bSizer12->Add( m_grid, 0, wxALL, 5 );
 	
@@ -271,13 +272,13 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	
 	m_ra = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("RA"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_ra->SetValue(true); 
-	m_ra->SetToolTip( wxT("Plot guide star RA (or dx) offset") );
+	m_ra->SetToolTip( wxT("绘制导星星点 RA（或 dx）偏移") );
 	
 	bSizer7->Add( m_ra, 0, wxALL, 5 );
 	
 	m_dec = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Dec"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_dec->SetValue(true); 
-	m_dec->SetToolTip( wxT("Plot guide star Dec (or dy) offset") );
+	m_dec->SetToolTip( wxT("绘制导星星点 Dec（或 dy）偏移") );
 	
 	bSizer7->Add( m_dec, 0, wxALL, 5 );
 	
@@ -287,13 +288,13 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	wxBoxSizer* bSizer101;
 	bSizer101 = new wxBoxSizer( wxVERTICAL );
 	
-	m_mass = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Star mass"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_mass->SetToolTip( wxT("Plot star mass value (guide star intensity)") );
+	m_mass = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, L10n("星点亮度", "Star mass", "Masse étoile"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_mass->SetToolTip( wxT("绘制星点亮度值（导星星点强度）") );
 	
 	bSizer101->Add( m_mass, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_snr = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("SNR"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_snr->SetToolTip( wxT("Plot star SNR (signal-to-noise ratio)") );
+	m_snr->SetToolTip( wxT("绘制星点信噪比 SNR") );
 	
 	bSizer101->Add( m_snr, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -303,14 +304,14 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	wxBoxSizer* bSizer11;
 	bSizer11 = new wxBoxSizer( wxVERTICAL );
 	
-	m_events = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Events"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_events = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, L10n("事件", "Events", "Événements"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_events->SetValue(true); 
-	m_events->SetToolTip( wxT("Plot events, including guide parameter changes, server commands received, and star lost events") );
+	m_events->SetToolTip( wxT("绘制事件，包括导星参数变化、服务器命令、丢星等") );
 	
 	bSizer11->Add( m_events, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_limits = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Limits"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_limits->SetToolTip( wxT("Plot the min-motion and max-duration levels") );
+	m_limits = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, L10n("限制线", "Limits", "Limites"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_limits->SetToolTip( wxT("绘制最小移动和最长脉冲限制线") );
 	
 	bSizer11->Add( m_limits, 0, wxALL, 5 );
 	
@@ -320,7 +321,7 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer( wxVERTICAL );
 	
-	m_scatter = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, wxT("Scatter"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_scatter = new wxCheckBox( sbSizer4->GetStaticBox(), wxID_ANY, L10n("散点图", "Scatter", "Dispersion"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer21->Add( m_scatter, 0, wxALL, 5 );
 	
 	
@@ -355,7 +356,7 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	m_stats->EnableDragColSize( true );
 	m_stats->SetColLabelSize( 20 );
 	m_stats->SetColLabelValue( 0, wxT("RMS") );
-	m_stats->SetColLabelValue( 1, wxT("Peak") );
+	m_stats->SetColLabelValue( 1, L10n("峰值", "Peak", "Pic") );
 	m_stats->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
 	// Rows
@@ -363,7 +364,7 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	m_stats->SetRowLabelSize( 80 );
 	m_stats->SetRowLabelValue( 0, wxT("RA") );
 	m_stats->SetRowLabelValue( 1, wxT("Dec") );
-	m_stats->SetRowLabelValue( 2, wxT("Total") );
+	m_stats->SetRowLabelValue( 2, L10n("总计", "Total", "Total") );
 	m_stats->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 	
 	// Label Appearance
@@ -377,7 +378,7 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	panel1->SetSizer( bSizer23 );
 	panel1->Layout();
 	bSizer23->Fit( panel1 );
-	m_statsnb->AddPage( panel1, wxT("Statistics"), true );
+	m_statsnb->AddPage( panel1, L10n("统计", "Statistics", "Statistiques"), true );
 	wxPanel* panel2;
 	panel2 = new wxPanel( m_statsnb, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer24;
@@ -390,7 +391,7 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	panel2->SetSizer( bSizer24 );
 	panel2->Layout();
 	bSizer24->Fit( panel2 );
-	m_statsnb->AddPage( panel2, wxT("Drift"), false );
+	m_statsnb->AddPage( panel2, L10n("漂移", "Drift", "Dérive"), false );
 	
 	bSizer22->Add( m_statsnb, 1, wxEXPAND | wxALL, 5 );
 	
@@ -414,30 +415,30 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	wxMenu* filemenu;
 	filemenu = new wxMenu();
 	wxMenuItem* fileOpen;
-	fileOpen = new wxMenuItem( filemenu, wxID_OPEN, wxString( wxT("&Open") ) , wxEmptyString, wxITEM_NORMAL );
+	fileOpen = new wxMenuItem( filemenu, wxID_OPEN, wxString( L10n("打开(&O)", "&Open", "&Ouvrir") ) , wxEmptyString, wxITEM_NORMAL );
 	filemenu->Append( fileOpen );
 	
 	wxMenuItem* fileSettings;
-	fileSettings = new wxMenuItem( filemenu, wxID_SETTINGS, wxString( wxT("Settings...") ) , wxEmptyString, wxITEM_NORMAL );
+	fileSettings = new wxMenuItem( filemenu, wxID_SETTINGS, wxString( L10n("设置...", "Settings...", "Réglages...") ) , wxEmptyString, wxITEM_NORMAL );
 	filemenu->Append( fileSettings );
 	
 	wxMenuItem* fileExit;
-	fileExit = new wxMenuItem( filemenu, wxID_EXIT, wxString( wxT("E&xit") ) , wxEmptyString, wxITEM_NORMAL );
+	fileExit = new wxMenuItem( filemenu, wxID_EXIT, wxString( L10n("退出(&X)", "E&xit", "&Quitter") ) , wxEmptyString, wxITEM_NORMAL );
 	filemenu->Append( fileExit );
 	
-	m_menubar->Append( filemenu, wxT("&File") ); 
+	m_menubar->Append( filemenu, L10n("文件(&F)", "&File", "&Fichier") );
 	
 	wxMenu* helpMenu;
 	helpMenu = new wxMenu();
 	wxMenuItem* helpAbout;
-	helpAbout = new wxMenuItem( helpMenu, wxID_ABOUT, wxString( wxT("About...") ) , wxEmptyString, wxITEM_NORMAL );
+	helpAbout = new wxMenuItem( helpMenu, wxID_ABOUT, wxString( L10n("关于...", "About...", "À propos...") ) , wxEmptyString, wxITEM_NORMAL );
 	helpMenu->Append( helpAbout );
 	
 	wxMenuItem* helpHelp;
-	helpHelp = new wxMenuItem( helpMenu, wxID_HELP, wxString( wxT("Quick Help...") ) , wxEmptyString, wxITEM_NORMAL );
+	helpHelp = new wxMenuItem( helpMenu, wxID_HELP, wxString( L10n("快速帮助...", "Quick Help...", "Aide rapide...") ) , wxEmptyString, wxITEM_NORMAL );
 	helpMenu->Append( helpHelp );
 	
-	m_menubar->Append( helpMenu, wxT("&Help") ); 
+	m_menubar->Append( helpMenu, L10n("帮助(&H)", "&Help", "&Aide") );
 	
 	this->SetMenuBar( m_menubar );
 	
@@ -473,8 +474,8 @@ LogViewFrameBase::LogViewFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	m_vplus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVPlus ), NULL, this );
 	m_vminus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVMinus ), NULL, this );
 	m_vreset->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVReset ), NULL, this );
-	m_vpan->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVPan ), NULL, this );
-	m_vlock->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVLock ), NULL, this );
+	m_vpan->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVPan ), NULL, this );
+	m_vlock->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVLock ), NULL, this );
 	m_device->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( LogViewFrameBase::OnDevice ), NULL, this );
 	m_units->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( LogViewFrameBase::OnUnits ), NULL, this );
 	m_axes->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( LogViewFrameBase::OnAxes ), NULL, this );
@@ -520,8 +521,8 @@ LogViewFrameBase::~LogViewFrameBase()
 	m_vplus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVPlus ), NULL, this );
 	m_vminus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVMinus ), NULL, this );
 	m_vreset->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVReset ), NULL, this );
-	m_vpan->Disconnect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVPan ), NULL, this );
-	m_vlock->Disconnect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVLock ), NULL, this );
+	m_vpan->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVPan ), NULL, this );
+	m_vlock->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LogViewFrameBase::OnVLock ), NULL, this );
 	m_device->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( LogViewFrameBase::OnDevice ), NULL, this );
 	m_units->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( LogViewFrameBase::OnUnits ), NULL, this );
 	m_axes->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( LogViewFrameBase::OnAxes ), NULL, this );
@@ -567,13 +568,13 @@ SettingsDialogBase::SettingsDialogBase( wxWindow* parent, wxWindowID id, const w
 	bSizer14 = new wxBoxSizer( wxVERTICAL );
 	
 	wxStaticBoxSizer* sbSizer5;
-	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Dither") ), wxVERTICAL );
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, L10n("抖动 / 稳定等待", "Dither", "Dithering / stabilisation") ), wxVERTICAL );
 	
-	m_excludeApi = new wxCheckBox( sbSizer5->GetStaticBox(), wxID_ANY, wxT("Exclude settling by server API events"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_excludeApi = new wxCheckBox( sbSizer5->GetStaticBox(), wxID_ANY, L10n("按服务器 API 事件排除稳定等待帧", "Exclude settling by server API events", "Exclure la stabilisation via les événements API"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_excludeApi->SetValue(true); 
 	sbSizer5->Add( m_excludeApi, 0, wxALL, 5 );
 	
-	m_excludeByParam = new wxCheckBox( sbSizer5->GetStaticBox(), wxID_ANY, wxT("Exclude settling parametrically"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_excludeByParam = new wxCheckBox( sbSizer5->GetStaticBox(), wxID_ANY, L10n("按参数排除稳定等待帧", "Exclude settling parametrically", "Exclure la stabilisation par paramètres"), wxDefaultPosition, wxDefaultSize, 0 );
 	sbSizer5->Add( m_excludeByParam, 0, wxALL, 5 );
 	
 	wxBoxSizer* bSizer20;
@@ -588,14 +589,14 @@ SettingsDialogBase::SettingsDialogBase( wxWindow* parent, wxWindowID id, const w
 	wxBoxSizer* bSizer15;
 	bSizer15 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticText1 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, wxT("Settle at <"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, L10n("稳定阈值 <", "Settle at <", "Stabiliser à <"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1->Wrap( -1 );
 	bSizer15->Add( m_staticText1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_settlePixels = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxT("1.00"), wxDefaultPosition, wxSize( 45,-1 ), 0 );
 	bSizer15->Add( m_settlePixels, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_staticText4 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, wxT("pixels"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, L10n("像素", "pixels", "pixels"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap( -1 );
 	bSizer15->Add( m_staticText4, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -605,14 +606,14 @@ SettingsDialogBase::SettingsDialogBase( wxWindow* parent, wxWindowID id, const w
 	wxBoxSizer* bSizer151;
 	bSizer151 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticText11 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, wxT("For"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText11 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, L10n("持续", "For", "Pendant"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText11->Wrap( -1 );
 	bSizer151->Add( m_staticText11, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_settleSeconds = new wxTextCtrl( sbSizer5->GetStaticBox(), wxID_ANY, wxT("10"), wxDefaultPosition, wxSize( 40,-1 ), 0 );
 	bSizer151->Add( m_settleSeconds, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_staticText5 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, wxT("seconds"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5 = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, L10n("秒", "seconds", "secondes"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap( -1 );
 	bSizer151->Add( m_staticText5, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
@@ -629,7 +630,7 @@ SettingsDialogBase::SettingsDialogBase( wxWindow* parent, wxWindowID id, const w
 	bSizer14->Add( sbSizer5, 1, wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer6;
-	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Colors") ), wxHORIZONTAL );
+	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, L10n("颜色", "Colors", "Couleurs") ), wxHORIZONTAL );
 	
 	m_raColorBtn = new wxButton( sbSizer6->GetStaticBox(), wxID_ANY, wxT("RA"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_raColorBtn->SetForegroundColour( wxColour( 255, 0, 0 ) );
@@ -653,11 +654,11 @@ SettingsDialogBase::SettingsDialogBase( wxWindow* parent, wxWindowID id, const w
 	bSizer22->Add( 0, 0, 1, wxEXPAND, 5 );
 	
 	wxButton* okbtn;
-	okbtn = new wxButton( this, wxID_OK, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	okbtn = new wxButton( this, wxID_OK, L10n("确定", "OK", "OK"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer22->Add( okbtn, 0, wxALL, 5 );
 	
 	wxButton* cancelbtn;
-	cancelbtn = new wxButton( this, wxID_CANCEL, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	cancelbtn = new wxButton( this, wxID_CANCEL, L10n("取消", "Cancel", "Annuler"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer22->Add( cancelbtn, 0, wxALL, 5 );
 	
 	
@@ -693,11 +694,11 @@ AnalyzeFrameBase::AnalyzeFrameBase( wxWindow* parent, wxWindowID id, const wxStr
 	wxBoxSizer* bSizer27;
 	bSizer27 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_toggleDrift = new wxToggleButton( this, wxID_ANY, wxT("Drift-corrected"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_toggleDrift = new wxToggleButton( this, wxID_ANY, L10n("漂移校正", "Drift-corrected", "Dérive corrigée"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_toggleDrift->SetValue( true ); 
 	bSizer27->Add( m_toggleDrift, 0, wxALL, 5 );
 	
-	m_toggleFFT = new wxToggleButton( this, wxID_ANY, wxT("Frequency Analysis"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_toggleFFT = new wxToggleButton( this, wxID_ANY, L10n("频率分析 / FFT", "Frequency Analysis / FFT", "Analyse fréquentielle / FFT"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer27->Add( m_toggleFFT, 0, wxALL, 5 );
 	
 	

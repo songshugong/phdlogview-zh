@@ -19,6 +19,7 @@
 
 #include "LogViewApp.h"
 #include "LogViewFrame.h"
+#include "localization.h"
 
 #include <gsl/gsl_errno.h>
 #include <wx/cmdline.h>
@@ -47,6 +48,7 @@ bool LogViewApp::OnInit()
         return false;
 
     wxLog::SetActiveTarget(new wxLogStderr());
+    InitAppLanguage();
 
     m_frame = new LogViewFrame();
     m_frame->Show();
@@ -62,6 +64,17 @@ bool LogViewApp::OnInit()
 int LogViewApp::OnExit()
 {
     return wxApp::OnExit();
+}
+
+void LogViewApp::RecreateFrame(const wxString& openFile)
+{
+    LogViewFrame *oldFrame = m_frame;
+    m_frame = new LogViewFrame();
+    m_frame->Show();
+    if (!openFile.IsEmpty())
+        m_frame->OpenLog(openFile);
+    if (oldFrame)
+        oldFrame->Destroy();
 }
 
 void LogViewApp::OnInitCmdLine(wxCmdLineParser& parser)

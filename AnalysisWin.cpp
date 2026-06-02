@@ -21,6 +21,7 @@
 
 #include "logparser.h"
 #include "LogViewApp.h"
+#include "localization.h"
 
 #include <algorithm>
 #include <gsl/gsl_complex_math.h>
@@ -674,7 +675,7 @@ void AnalysisWin::AnalyzeGA(const GuideSession& session, size_t pos)
     m_garun.Analyze(session, begin, end, false);
     s_drpos.Init(m_graph->GetSize(), m_garun);
     s_fftpos.Init(m_graph->GetSize(), m_garun);
-    SetTitle(_("Analysis"));
+    SetTitle(L10n(wxT("分析"), wxT("Analysis"), wxT("Analyse")));
 }
 
 bool AnalysisWin::CanAnalyzeAll(const GuideSession& session)
@@ -687,7 +688,9 @@ void AnalysisWin::AnalyzeAll(const GuideSession& session, bool undo_ra_correctio
     m_garun.Analyze(session, 0, session.entries.size(), undo_ra_corrections);
     s_drpos.Init(m_graph->GetSize(), m_garun);
     s_fftpos.Init(m_graph->GetSize(), m_garun);
-    SetTitle(undo_ra_corrections ? _("Analysis ** RA Corrections Removed **") : _("Analysis"));
+    SetTitle(undo_ra_corrections ?
+        L10n(wxT("分析 ** 已去除 RA 修正 **"), wxT("Analysis ** RA Corrections Removed **"), wxT("Analyse ** corrections RA retirées **")) :
+        L10n(wxT("分析"), wxT("Analysis"), wxT("Analyse")));
 }
 
 void AnalysisWin::OnCheck(wxCommandEvent& event)
@@ -913,7 +916,10 @@ void AnalysisWin::OnMove(wxMouseEvent& event)
         double p, a;
         s_fftpos.Eval(m_cursor, &y, &p, &a);
 
-        m_statusBar->SetStatusText(wxString::Format("Period: %.1fs  Amplitude: %.1f\" (%.2fpx)  P-P: %.1f\" (%.2fpx)  RMS: %.1f\" (%.2fpx)",
+        m_statusBar->SetStatusText(wxString::Format(L10n(
+            wxT("周期: %.1fs  振幅: %.1f\" (%.2fpx)  峰峰值: %.1f\" (%.2fpx)  RMS: %.1f\" (%.2fpx)"),
+            wxT("Period: %.1fs  Amplitude: %.1f\" (%.2fpx)  P-P: %.1f\" (%.2fpx)  RMS: %.1f\" (%.2fpx)"),
+            wxT("Période : %.1fs  Amplitude : %.1f\" (%.2fpx)  P-P : %.1f\" (%.2fpx)  RMS : %.1f\" (%.2fpx)")),
             p, a * m_garun.pixscale, a, 2. * a * m_garun.pixscale, 2. * a,
             M_SQRT2 / 2.0 * a * m_garun.pixscale, M_SQRT2 / 2.0 * a));
     }
@@ -925,7 +931,10 @@ void AnalysisWin::OnMove(wxMouseEvent& event)
         {
             int y = event.GetPosition().y;
             double yval = s_drpos.RaOrDec(y);
-            s = wxString::Format("Time: %-.1fs  %s    Y: %.2f\" (%.2fpx)",
+            s = wxString::Format(L10n(
+                    wxT("时间: %-.1fs  %s    Y: %.2f\" (%.2fpx)"),
+                    wxT("Time: %-.1fs  %s    Y: %.2f\" (%.2fpx)"),
+                    wxT("Temps : %-.1fs  %s    Y : %.2f\" (%.2fpx)")),
                     t, (m_garun.starts + wxTimeSpan(0, 0, t)).Format("%H:%M:%S"),
                     -yval * m_garun.pixscale, -yval);
         }

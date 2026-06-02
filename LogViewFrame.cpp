@@ -21,6 +21,7 @@
 #include "LogViewApp.h"
 #include "AnalysisWin.h"
 #include "logparser.h"
+#include "localization.h"
 
 #include <wx/aboutdlg.h>
 #include <wx/busyinfo.h>
@@ -32,6 +33,7 @@
 #include <wx/graphics.h>
 #include <wx/grid.h>
 #include <wx/log.h>
+#include <wx/msgdlg.h>
 #include <wx/splitter.h>
 #include <wx/stopwatch.h>
 #include <wx/textentry.h>
@@ -204,6 +206,8 @@ LogViewFrame::LogViewFrame()
     m_session(nullptr),
     m_calibration(nullptr),
     m_timer(this, ID_TIMER),
+    m_vpanActive(false),
+    m_vlockActive(false),
     m_analysisWin(nullptr)
 {
     SetTitle(APP_NAME);
@@ -211,6 +215,47 @@ LogViewFrame::LogViewFrame()
     m_graph->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
     m_graph->Connect(wxEVT_MOUSE_CAPTURE_LOST, wxMouseCaptureLostEventHandler(LogViewFrame::OnCaptureLost), NULL, this);
+
+    {
+        wxMenu *languageMenu = new wxMenu();
+        int zhId = wxWindow::NewControlId();
+        int enId = wxWindow::NewControlId();
+        int frId = wxWindow::NewControlId();
+
+        languageMenu->AppendRadioItem(zhId, wxT("简体中文"));
+        languageMenu->AppendRadioItem(enId, wxT("English"));
+        languageMenu->AppendRadioItem(frId, wxT("Français"));
+
+        switch (GetAppLanguage())
+        {
+        case AppLanguage::English:
+            languageMenu->Check(enId, true);
+            break;
+        case AppLanguage::French:
+            languageMenu->Check(frId, true);
+            break;
+        default:
+            languageMenu->Check(zhId, true);
+            break;
+        }
+
+        auto setLanguage = [this](AppLanguage lang) {
+            if (lang == GetAppLanguage())
+                return;
+            wxString openFile = CurrentLogFile();
+            ::SaveGeometry(this, "/geometry");
+            SetAppLanguage(lang);
+            wxGetApp().RecreateFrame(openFile);
+        };
+
+        Bind(wxEVT_MENU, [=](wxCommandEvent&) { setLanguage(AppLanguage::SimplifiedChinese); }, zhId);
+        Bind(wxEVT_MENU, [=](wxCommandEvent&) { setLanguage(AppLanguage::English); }, enId);
+        Bind(wxEVT_MENU, [=](wxCommandEvent&) { setLanguage(AppLanguage::French); }, frId);
+
+        GetMenuBar()->Insert(1, languageMenu, L10n(wxT("语言(&L)"), wxT("&Language"), wxT("&Langue")));
+        if (GetMenuBar()->GetMenuCount() > 3)
+            GetMenuBar()->SetMenuLabel(GetMenuBar()->GetMenuCount() - 1, L10n(wxT("窗口(&W)"), wxT("&Window"), wxT("&Fenêtre")));
+    }
 
     Bind(wxEVT_CHAR_HOOK, &LogViewFrame::OnKeyDown, this);
 
@@ -245,7 +290,8 @@ LogViewFrame::LogViewFrame()
 
     InitLegends(true, m_raLegend, m_decLegend);
 
-    m_vlock->SetValue(vscale_locked());
+    m_vlockActive = vscale_locked();
+    m_vlock->SetLabel(m_vlockActive ? wxT("*L") : wxT("L"));
 }
 
 LogViewFrame::~LogViewFrame()
@@ -415,7 +461,7 @@ void LogViewFrame::OpenLog(const wxString& filename)
 
     {
         wxWindowDisabler disableAll;
-        wxBusyInfo wait("Please wait, working...");
+        wxBusyInfo wait(L10n(wxT("请稍候，正在处理..."), wxT("Please wait, working..."), wxT("Veuillez patienter, traitement en cours...")));
         LogParser().Parse(ifs, s_log);
     }
 
@@ -434,7 +480,7 @@ void LogViewFrame::OpenLog(const wxString& filename)
         if (it->type == CALIBRATION_SECTION)
         {
             s = &s_log.calibrations[it->idx];
-            m_sessions->SetCellValue(row, 2, "Calibration");
+            m_sessions->SetCellValue(row, 2, L10n(wxT("校准"), wxT("Calibration"), wxT("Calibration")));
             m_sessions->SetCellValue(row, 3, wxEmptyString);
         }
         else
@@ -444,7 +490,7 @@ void LogViewFrame::OpenLog(const wxString& filename)
             IncludeAll(session->entries);
             ExcludeSettling(session);
             session->CalcStats();
-            m_sessions->SetCellValue(row, 2, "Guiding");
+            m_sessions->SetCellValue(row, 2, L10n(wxT("导星"), wxT("Guiding"), wxT("Guidage")));
             m_sessions->SetCellValue(row, 3, durStr(session->duration));
         }
         m_sessions->SetCellValue(row, 1, s->date);
@@ -455,7 +501,7 @@ void LogViewFrame::OpenLog(const wxString& filename)
 
     if (s_log.sections.empty())
     {
-        m_sessionInfo->SetValue("(empty log file)");
+        m_sessionInfo->SetValue(L10n(wxT("(空日志文件)"), wxT("(empty log file)"), wxT("(journal vide)")));
     }
     else
     {
@@ -482,7 +528,7 @@ void LogViewFrame::OnFileExit(wxCommandEvent& event)
 
 void LogViewFrame::OnFileOpen(wxCommandEvent& event)
 {
-    wxFileDialog openFileDialog(this, _("Open PHD2 Guide Log"),
+    wxFileDialog openFileDialog(this, L10n(wxT("打开 PHD2 导星日志"), wxT("Open PHD2 Guide Log"), wxT("Ouvrir un journal de guidage PHD2")),
         Config->Read("/FileOpenDir", wxEmptyString),
         wxEmptyString,
         "PHD2 Guide Logs (*PHD2_GuideLog*.txt)|*PHD2_GuideLog*.txt|"
@@ -521,6 +567,7 @@ void SettingsDialog::OnDecColor(wxCommandEvent& event)
 void LogViewFrame::OnFileSettings(wxCommandEvent& event)
 {
     SettingsDialog dlg(this);
+    dlg.SetTitle(L10n(wxT("设置"), wxT("Settings"), wxT("Réglages")));
 
     dlg.m_excludeApi->SetValue(s_settings.excludeByServer);
     dlg.m_excludeByParam->SetValue(s_settings.excludeParametric);
@@ -571,20 +618,20 @@ void LogViewFrame::OnRightUp(wxMouseEvent& event)
 
     wxMenu *menu = new wxMenu();
 
-    menu->Append(ID_INCLUDE_ALL, _("Include all frames"));
-    menu->Append(ID_INCLUDE_NONE, _("Exclude all frames"));
-    menu->Append(ID_EXCLUDE_SETTLE, _("Exclude frames settling"));
+    menu->Append(ID_INCLUDE_ALL, L10n(wxT("纳入所有帧"), wxT("Include all frames"), wxT("Inclure toutes les images")));
+    menu->Append(ID_INCLUDE_NONE, L10n(wxT("排除所有帧"), wxT("Exclude all frames"), wxT("Exclure toutes les images")));
+    menu->Append(ID_EXCLUDE_SETTLE, L10n(wxT("排除稳定等待帧"), wxT("Exclude frames settling"), wxT("Exclure les images de stabilisation")));
     menu->AppendSeparator();
 
-    wxMenuItem *mi1 = menu->Append(ID_ANALYZE_ALL, _("Analyze selected frames"));
-    wxMenuItem *mi2 = menu->Append(ID_ANALYZE_ALL_NORA, _("Analyze selected, raw RA"));
+    wxMenuItem *mi1 = menu->Append(ID_ANALYZE_ALL, L10n(wxT("分析选中片段"), wxT("Analyze selected frames"), wxT("Analyser la section sélectionnée")));
+    wxMenuItem *mi2 = menu->Append(ID_ANALYZE_ALL_NORA, L10n(wxT("分析选中片段：原始 RA / 去除修正"), wxT("Analyze selected, raw RA"), wxT("Analyser la section : RA brute")));
     if (!AnalysisWin::CanAnalyzeAll(*m_session))
     {
         mi1->Enable(false);
         mi2->Enable(false);
     }
 
-    wxMenuItem *mi = menu->Append(ID_ANALYZE_GA, _("Analyze unguided section"));
+    wxMenuItem *mi = menu->Append(ID_ANALYZE_GA, L10n(wxT("分析未导星片段"), wxT("Analyze unguided section"), wxT("Analyser la section non guidée")));
 
     {
         GraphInfo& ginfo = m_session->m_ginfo;
@@ -625,15 +672,15 @@ static void InitStats(wxGrid *stats, wxHtmlWindow *stats2, const GuideSession *s
     stats->SetCellValue(2, 0, wxString::Format("% .2f\" (%.2f px)", session->pixelScale * tot, tot));
     stats->SetCellValue(0, 1, wxString::Format("% .2f\" (% .2f px)", session->pixelScale * session->peak_ra, session->peak_ra));
     stats->SetCellValue(1, 1, wxString::Format("% .2f\" (% .2f px)", session->pixelScale * session->peak_dec, session->peak_dec));
-    stats->SetCellValue(2, 1, wxString::Format(" Elong.: %.f%%", session->elongation * 100.));
+    stats->SetCellValue(2, 1, wxString::Format(L10n(wxT(" 伸长率: %.f%%"), wxT(" Elong.: %.f%%"), wxT(" Allong. : %.f%%")), session->elongation * 100.));
     stats->AutoSize();
     stats->EndBatch();
 
     std::ostringstream os;
     os << "<span style='font-family:monospace;font-size:8;'><table cellspacing=1 cellpadding=1 border=0>"
-            "<tr><td>RA Drift</td><td>" << FormatNum(session->drift_ra * session->pixelScale) << "\"/min, " << FormatNum(session->drift_ra) << " px/min</td></tr>"
-       <<  "<tr><td>Dec Drift</td><td>" << FormatNum(session->drift_dec * session->pixelScale) << "\"/min, " << FormatNum(session->drift_dec) << " px/min</td></tr>"
-       <<  "<tr><td>Polar Alignment Error  </td><td>" << std::fixed << std::setprecision(1) << session->paerr << "'</td></tr>"
+            "<tr><td>" << L10n(wxT("RA 漂移"), wxT("RA Drift"), wxT("Dérive RA")).ToStdString() << "</td><td>" << FormatNum(session->drift_ra * session->pixelScale) << "\"/min, " << FormatNum(session->drift_ra) << " px/min</td></tr>"
+       <<  "<tr><td>" << L10n(wxT("Dec 漂移"), wxT("Dec Drift"), wxT("Dérive Dec")).ToStdString() << "</td><td>" << FormatNum(session->drift_dec * session->pixelScale) << "\"/min, " << FormatNum(session->drift_dec) << " px/min</td></tr>"
+       <<  "<tr><td>" << L10n(wxT("极轴误差"), wxT("Polar Alignment Error"), wxT("Erreur d'alignement polaire")).ToStdString() << "  </td><td>" << std::fixed << std::setprecision(1) << session->paerr << "'</td></tr>"
        << "</table></span>";
     stats2->SetPage(os.str());
 }
@@ -712,7 +759,7 @@ void LogViewFrame::OnHelpAbout(wxCommandEvent& event)
 
     aboutInfo.SetName(APP_NAME);
     aboutInfo.SetVersion(APP_VERSION_STR);
-    aboutInfo.SetDescription(_("A tool for visualizing PHD2 guide log data"));
+    aboutInfo.SetDescription(L10n(wxT("用于查看和分析 PHD2 导星日志的工具"), wxT("A tool for visualizing PHD2 guide log data"), wxT("Outil de visualisation des journaux de guidage PHD2")));
     aboutInfo.SetCopyright("(C) 2018-2020 Andy Galasso <andy.galasso@gmail.com>");
     aboutInfo.SetWebSite("http://adgsoftware.com/phd2utils");
     aboutInfo.AddDeveloper("Andy Galasso");
@@ -731,27 +778,66 @@ static HelpDialog *s_help;
 
 HelpDialog::HelpDialog(wxWindow *parent) : HelpDialogBase(parent)
 {
+    SetTitle(L10n(wxT("PHD 日志查看器快速帮助"), wxT("PHD Log Viewer Quick Help"), wxT("Aide rapide PHD Log Viewer")));
     static const wxString BR = "<br>";
     wxString s;
-    s << "<html>"
-        << "<h3>Opening a guide log</h3>"
-        << "There are three ways to open a PHD2 Log File:" << BR
-        << "1. Menu: File => Open" << BR
-        << "2. Drag and drop from Windows explorer" << BR
-        << "3. As an argument on the command-line" << BR
-        << "<h3>Viewing calibration</h3>"
-        << "Drag with the mouse to pan" << BR
-        << "Use the mouse wheel or the lower +/- buttons to zoom in and out" << BR
-        << "<h3>Viewing guiding data</h3>"
-        << "Drag left or right with the mouse to pan, or use the horizontal scrollbar" << BR
-        << "The mouse wheel or the lower +/- buttons will zoom the horizontal scale" << BR
-        << "Drag up or down with the mouse or use the +/- buttons on the right to change the vertical scale" << BR
-        << "<h3>Statistics</h3>"
-        << "To exclude a range of points from the statistics, hold down CTRL and drag the mouse," << BR
-        << "To include a range of points from the statistics, hold down Shift and drag the mouse," << BR
-        << "CTRL-Click on an excluded range to un-exclude the range of points." << BR
-        << "Right-click on the graph for some more options." << BR
-        << "</html>";
+    if (GetAppLanguage() == AppLanguage::English)
+        s << "<html><h3>Opening a guide log</h3>"
+          << "There are three ways to open a PHD2 Log File:" << BR
+          << "1. Menu: File => Open" << BR
+          << "2. Drag and drop from the file manager" << BR
+          << "3. As an argument on the command-line" << BR
+          << "<h3>Viewing calibration</h3>"
+          << "Drag with the mouse to pan" << BR
+          << "Use the mouse wheel or the lower +/- buttons to zoom in and out" << BR
+          << "<h3>Viewing guiding data</h3>"
+          << "Drag left or right with the mouse to pan, or use the horizontal scrollbar" << BR
+          << "The mouse wheel or lower +/- buttons zoom the horizontal scale" << BR
+          << "Drag up or down or use the right-side +/- buttons to change the vertical scale" << BR
+          << "<h3>Statistics</h3>"
+          << "CTRL-drag excludes a range from the statistics." << BR
+          << "Shift-drag includes a range in the statistics." << BR
+          << "CTRL-click an excluded range to include it again." << BR
+          << "Right-click the graph for more options, including FFT frequency analysis." << BR
+          << "</html>";
+    else if (GetAppLanguage() == AppLanguage::French)
+        s << "<html><h3>Ouvrir un journal de guidage</h3>"
+          << "Il y a trois façons d'ouvrir un journal PHD2 :" << BR
+          << "1. Menu : Fichier => Ouvrir" << BR
+          << "2. Glisser-déposer le fichier dans la fenêtre" << BR
+          << "3. Passer le chemin du fichier en ligne de commande" << BR
+          << "<h3>Voir la calibration</h3>"
+          << "Faites glisser avec la souris pour déplacer la vue" << BR
+          << "Utilisez la molette ou les boutons +/- du bas pour zoomer" << BR
+          << "<h3>Voir les données de guidage</h3>"
+          << "Glissez à gauche ou à droite, ou utilisez la barre de défilement horizontale" << BR
+          << "La molette ou les boutons +/- du bas zooment l'axe du temps" << BR
+          << "Glissez verticalement ou utilisez les boutons +/- à droite pour l'échelle verticale" << BR
+          << "<h3>Statistiques</h3>"
+          << "CTRL-glisser exclut une plage des statistiques." << BR
+          << "Maj-glisser inclut une plage dans les statistiques." << BR
+          << "CTRL-clic sur une plage exclue l'inclut de nouveau." << BR
+          << "Clic droit sur le graphique pour plus d'options, dont l'analyse FFT." << BR
+          << "</html>";
+    else
+        s << "<html><h3>打开导星日志</h3>"
+          << "有三种方式可以打开 PHD2 日志文件：" << BR
+          << "1. 菜单：文件 => 打开" << BR
+          << "2. 将日志文件拖放到窗口中" << BR
+          << "3. 从命令行传入日志文件路径" << BR
+          << "<h3>查看校准</h3>"
+          << "用鼠标拖动可以平移" << BR
+          << "用鼠标滚轮或下方 +/- 按钮可以缩放" << BR
+          << "<h3>查看导星数据</h3>"
+          << "左右拖动可以平移，也可以使用水平滚动条" << BR
+          << "鼠标滚轮或下方 +/- 按钮用于缩放时间轴" << BR
+          << "上下拖动或使用右侧 +/- 按钮可以改变纵向比例" << BR
+          << "<h3>统计</h3>"
+          << "按住 CTRL 并拖动鼠标，可以从统计中排除一段数据。" << BR
+          << "按住 Shift 并拖动鼠标，可以把一段数据重新纳入统计。" << BR
+          << "CTRL-单击已排除区域，可以取消排除。" << BR
+          << "在曲线图上右键可打开更多选项，包括 FFT 频率分析。" << BR
+          << "</html>";
 
     m_html->SetPage(s);
     s_help = this;
@@ -902,7 +988,7 @@ void LogViewFrame::OnCellSelected(wxGridEvent& event)
             wxWindowUpdateLocker lck(m_sessionInfo);
             m_sessionInfo->Clear();
             for (auto it = section->hdr.begin(); it != section->hdr.end(); ++it)
-                *m_sessionInfo << *it << "\n";
+                *m_sessionInfo << TranslateLogText(*it) << "\n";
             m_sessionInfo->SetInsertionPoint(0);
         }
 
@@ -1121,8 +1207,9 @@ void LogViewFrame::OnMove(wxMouseEvent& event)
             {
                 const GuideEntry& ent = entries[i];
                 wxDateTime t(m_session->starts + wxTimeSpan(0, 0, 0, (wxLongLong)(ent.dt * 1000.0)));
+                wxString info = TranslateLogText(wxString(ent.info));
                 m_rowInfo->SetValue(wxString::Format("%s Frame %d t=%.2f (x,y)=(%.2f,%.2f) (RA,Dec)=(%.2f,%.2f) guide (%.2f,%.2f) corr (%d,%d) m=%d SNR=%.1f%s %s",
-                    t.FormatISOCombined(' '), ent.frame, ent.dt, ent.dx, ent.dy, ent.raraw, ent.decraw, ent.raguide, ent.decguide, ent.radur, ent.decdur, ent.mass, ent.snr, ent.err == 1 ? " SAT" : "", ent.info));
+                    t.FormatISOCombined(' '), ent.frame, ent.dt, ent.dx, ent.dy, ent.raraw, ent.decraw, ent.raguide, ent.decguide, ent.radur, ent.decdur, ent.mass, ent.snr, ent.err == 1 ? " SAT" : "", info));
             }
 
             event.Skip();
@@ -1136,7 +1223,7 @@ void LogViewFrame::OnMove(wxMouseEvent& event)
             int dy = pos.y - s_drag.m_lastMousePos.y;
             s_drag.m_lastMousePos = pos;
 
-            bool vpan = m_vpan->GetValue();
+            bool vpan = m_vpanActive;
 
             if (!vpan)
             {
@@ -1823,7 +1910,8 @@ void LogViewFrame::OnPaintGraph(wxPaintEvent& event)
             const auto& info = *it;
             if (info.idx > i1)
                 break;
-            wxString s = info.repeats > 1 ? wxString::Format("%d x %s", info.repeats, info.info) : wxString(info.info);
+            wxString eventText = TranslateLogText(wxString(info.info));
+            wxString s = info.repeats > 1 ? wxString::Format("%d x %s", info.repeats, eventText) : eventText;
             int width = dc.GetTextExtent(s).x;
             int xpos = info.idx * ginfo.hscale - ginfo.xofs;
             if (info.idx <= (int)i0)
@@ -1976,15 +2064,18 @@ void LogViewFrame::OnVReset( wxCommandEvent& event )
 
 void LogViewFrame::OnVPan(wxCommandEvent& event)
 {
-    if (m_vpan->GetValue())
-        m_vpan->SetLabel("&P/Z");
+    m_vpanActive = !m_vpanActive;
+    if (m_vpanActive)
+        m_vpan->SetLabel(wxT("*P/Z"));
     else
-        m_vpan->SetLabel("P/&Z");
+        m_vpan->SetLabel(wxT("P/Z"));
 }
 
 void LogViewFrame::OnVLock(wxCommandEvent& event)
 {
-    if (m_vlock->GetValue())
+    m_vlockActive = !m_vlockActive;
+    m_vlock->SetLabel(m_vlockActive ? wxT("*L") : wxT("L"));
+    if (m_vlockActive)
     {
         update_vscale_setting(m_session->m_ginfo.vscale, m_session->pixelScale);
     }
@@ -2194,7 +2285,6 @@ void LogViewFrame::OnKeyDown(wxKeyEvent& event)
     case 'Z':
         if (m_vpan->IsEnabled())
         {
-            m_vpan->SetValue(!m_vpan->GetValue());
             wxCommandEvent dummy;
             OnVPan(dummy);
             break;

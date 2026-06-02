@@ -32,7 +32,7 @@ endif(COMMAND cmake_policy)
 
 if(APPLE)
   if(NOT DEFINED CMAKE_OSX_ARCHITECTURES)
-    set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "macOS target architectures")
+    set(CMAKE_OSX_ARCHITECTURES "${CMAKE_HOST_SYSTEM_PROCESSOR}" CACHE STRING "macOS target architectures")
   endif()
   if(NOT DEFINED CMAKE_OSX_DEPLOYMENT_TARGET)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum OSX deployment version")
@@ -45,7 +45,7 @@ project (phdlogview)
 set(srcdir ${CMAKE_SOURCE_DIR})
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-#include_directories(${srcdir})
+include_directories(${srcdir})
 
 add_definitions(-D_USE_MATH_DEFINES)
 
@@ -106,7 +106,7 @@ if(WIN32)
   endif()
   set(wxWidgets_USE_STATIC ON)
   set(wxWidgets_USE_DEBUG OFF)
-  set(wxWidgets_USE_UNICODE OFF)
+  set(wxWidgets_USE_UNICODE ON)
   find_package(wxWidgets REQUIRED COMPONENTS propgrid base core aui adv html net)
   include(${wxWidgets_USE_FILE})
   message(${wxWidgets_USE_FILE})
@@ -142,6 +142,8 @@ set(SRC
   ${srcdir}/LogViewApp.h
   ${srcdir}/LogViewFrame.cpp
   ${srcdir}/LogViewFrame.h
+  ${srcdir}/localization.cpp
+  ${srcdir}/localization.h
   ${srcdir}/logparser.cpp
   ${srcdir}/logparser.h
   ${srcdir}/phdlogview.ico
@@ -154,7 +156,7 @@ set (FBSRC
   ${CMAKE_CURRENT_BINARY_DIR}/LogViewFrameBase.h
 )
 
-set (HAVE_WXFB TRUE CACHE BOOL "whether to use wxformbuilder")
+set (HAVE_WXFB FALSE CACHE BOOL "whether to use wxformbuilder")
 
 if (HAVE_WXFB)
 
@@ -246,6 +248,19 @@ add_custom_command(TARGET phdlogview POST_BUILD
     "${CMAKE_SOURCE_DIR}/README.txt"
     $<TARGET_FILE_DIR:phdlogview>)
 
+if(APPLE)
+  set(PHDLOGVIEW_LANGUAGE_OUTPUT_DIR "$<TARGET_BUNDLE_DIR:phdlogview>/Contents/Resources/languages")
+else()
+  set(PHDLOGVIEW_LANGUAGE_OUTPUT_DIR "$<TARGET_FILE_DIR:phdlogview>/languages")
+endif()
+
+add_custom_command(TARGET phdlogview POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E make_directory
+    "${PHDLOGVIEW_LANGUAGE_OUTPUT_DIR}"
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/languages"
+    "${PHDLOGVIEW_LANGUAGE_OUTPUT_DIR}")
+
 if(UNIX AND NOT APPLE)
   install(TARGETS phdlogview
           RUNTIME DESTINATION bin)
@@ -253,4 +268,6 @@ if(UNIX AND NOT APPLE)
           DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pixmaps/ )
   install(FILES ${CMAKE_SOURCE_DIR}/phdlogview.desktop
           DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications/ )
+  install(DIRECTORY ${CMAKE_SOURCE_DIR}/languages
+          DESTINATION ${CMAKE_INSTALL_PREFIX}/share/phdlogview )
 endif()
