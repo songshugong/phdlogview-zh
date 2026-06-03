@@ -12,6 +12,8 @@ Release binaries will be published separately for each operating system:
 - macOS app: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64.zip
 - Linux Debian/Ubuntu package: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-amd64.deb
 
+macOS note: the app bundle is ad-hoc signed and includes bundled runtime libraries, but it is not Apple Developer ID notarized. If Gatekeeper blocks the first launch after download, open it with Control-click / right-click and Open.
+
 ## Build
 
 The project uses CMake and wxWidgets.
@@ -40,6 +42,8 @@ PHD2 Log Viewer 是用于查看和分析 PHD2 导星日志的桌面工具，可�
 - Windows 安装包：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-windows-x86_64-setup.exe
 - macOS App：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64.zip
 - Linux Debian/Ubuntu 安装包：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-amd64.deb
+
+macOS 说明：App 已做 ad-hoc 签名并打包运行库依赖，但没有 Apple Developer ID 公证。如果下载后首次启动被 Gatekeeper 阻止，请用 Control-click / 右键选择“打开”。
 
 ## 构建
 
