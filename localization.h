@@ -16,6 +16,7 @@ wxString GetAppLanguageCode();
 void SetAppLanguage(AppLanguage lang);
 
 wxString L10n(const wxString& zh, const wxString& en, const wxString& fr);
+wxString L10n(const char *zh, const char *en, const char *fr);
 wxString TranslateLogText(wxString s);
 
 #endif

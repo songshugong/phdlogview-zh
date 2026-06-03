@@ -248,6 +248,11 @@ endif()
 
 target_compile_definitions( phdlogview PRIVATE "${wxWidgets_DEFINITIONS}" "HAVE_TYPE_TRAITS")
 target_compile_options(     phdlogview PRIVATE "${wxWidgets_CXX_FLAGS};")
+if(WIN32 AND MSVC)
+  target_compile_options(phdlogview PRIVATE /utf-8)
+elseif(WIN32 AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
+  target_compile_options(phdlogview PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8)
+endif()
 target_link_libraries(phdlogview ${APP_LINK_EXTERNAL})
 target_include_directories(phdlogview PRIVATE ${wxWidgets_INCLUDE_DIRS})
 

@@ -56,6 +56,19 @@ wxString L10n(const wxString& zh, const wxString& en, const wxString& fr)
     }
 }
 
+wxString L10n(const char *zh, const char *en, const char *fr)
+{
+    switch (s_language)
+    {
+    case AppLanguage::English:
+        return wxString::FromUTF8(en);
+    case AppLanguage::French:
+        return wxString::FromUTF8(fr);
+    default:
+        return wxString::FromUTF8(zh);
+    }
+}
+
 wxString TranslateLogText(wxString s)
 {
     struct Replacement
