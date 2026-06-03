@@ -8,9 +8,9 @@ This standalone branch adds built-in Simplified Chinese localization while keepi
 
 Release binaries will be published separately for each operating system:
 
-- Windows: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-windows-x86_64.zip
-- macOS: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64-local.zip
-- Linux: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-x86_64.tar.gz
+- Windows installer: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-windows-x86_64-setup.exe
+- macOS app: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64.zip
+- Linux Debian/Ubuntu package: https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-amd64.deb
 
 ## Build
 
@@ -23,9 +23,9 @@ cmake --build build --config Release
 
 Platform notes:
 
-- Windows builds use the bundled `3rdparty` runtime files and the `phdlogview-x86.iss.in` / `phdlogview-x64.iss.in` Inno Setup templates.
-- macOS builds create a `phdlogview.app` bundle and copy language metadata into `Contents/Resources/languages`. The default build uses the host CPU architecture; pass `-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"` only when all dependencies are universal.
-- Linux builds install the executable, desktop entry, icon, and language metadata under the install prefix.
+- Windows release builds produce an Inno Setup installer with the executable, runtime DLLs, license, README, and language metadata.
+- macOS builds create a `phdlogview.app` bundle and copy language metadata into `Contents/Resources/languages`. The default build uses the host CPU architecture; pass `-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"` only when all dependencies are universal. Release builds are uploaded from the local Mac app bundle with bundled Homebrew runtime libraries.
+- Linux release builds produce a Debian/Ubuntu `.deb` package with the executable, desktop entry, icon, and language metadata.
 
 ## 中文说明
 
@@ -37,9 +37,9 @@ PHD2 Log Viewer 是用于查看和分析 PHD2 导星日志的桌面工具，可�
 
 正式构建文件会按系统分别发布：
 
-- Windows：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-windows-x86_64.zip
-- macOS：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64-local.zip
-- Linux：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-x86_64.tar.gz
+- Windows 安装包：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-windows-x86_64-setup.exe
+- macOS App：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-macos-arm64.zip
+- Linux Debian/Ubuntu 安装包：https://github.com/songshugong/phdlogview/releases/latest/download/phdlogview-linux-amd64.deb
 
 ## 构建
 
@@ -52,9 +52,9 @@ cmake --build build --config Release
 
 平台说明：
 
-- Windows：使用仓库内 `3rdparty` 运行库文件，并通过 `phdlogview-x86.iss.in` / `phdlogview-x64.iss.in` 生成安装包。
-- macOS：生成 `phdlogview.app`，语言元数据会复制到 `Contents/Resources/languages`。默认使用本机 CPU 架构；只有在依赖库都是 universal 时才传入 `-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"`。
-- Linux：安装可执行文件、桌面入口、图标和语言元数据。
+- Windows：生成 Inno Setup 安装器，包含可执行文件、运行库 DLL、许可证、README 和语言元数据。
+- macOS：生成 `phdlogview.app`，语言元数据会复制到 `Contents/Resources/languages`。默认使用本机 CPU 架构；只有在依赖库都是 universal 时才传入 `-DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"`。发布包上传本地 Mac app bundle，并包含 Homebrew 运行库依赖。
+- Linux：生成 Debian/Ubuntu `.deb` 安装包，包含可执行文件、桌面入口、图标和语言元数据。
 
 ## License
 

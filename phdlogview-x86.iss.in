@@ -23,8 +23,8 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=Release\LICENSE.txt
-OutputDir=.
-OutputBaseFilename=phdlogview_setup-{#MyAppVersion}
+OutputDir=Output
+OutputBaseFilename=phdlogview-windows-x86-setup
 Compression=lzma
 SolidCompression=yes
 
@@ -35,15 +35,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "Release\phdlogview.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Release\cblas.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Release\gsl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Release\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Release\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Release\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Release\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Release\README.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Release\languages\*"; DestDir: "{app}\languages"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
