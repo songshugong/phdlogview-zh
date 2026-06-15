@@ -1,10 +1,10 @@
 # PHD2 Log Viewer Chinese Build
 
-## Downloads
+## 下载
 
-- Windows 安装包 / Windows installer: https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-windows-x86_64-setup.exe
-- macOS App: https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-macos-arm64.zip
-- Linux Debian/Ubuntu 安装包 / Linux Debian/Ubuntu package: https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-linux-amd64.deb
+- Windows 安装包：https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-windows-x86_64-setup.exe
+- macOS 应用：https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-macos-arm64.zip
+- Linux Debian/Ubuntu 安装包：https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-linux-amd64.deb
 
 ## 中文说明
 
