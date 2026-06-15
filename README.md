@@ -2,9 +2,9 @@
 
 ## Downloads
 
-- Windows installer: https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-windows-x86_64-setup.exe
-- macOS app: https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-macos-arm64.zip
-- Linux Debian/Ubuntu package: https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-linux-amd64.deb
+- Windows 安装包 / Windows installer: https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-windows-x86_64-setup.exe
+- macOS App: https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-macos-arm64.zip
+- Linux Debian/Ubuntu 安装包 / Linux Debian/Ubuntu package: https://github.com/songshugong/phdlogview-zh/releases/latest/download/phdlogview-linux-amd64.deb
 
 ## 中文说明
 
@@ -12,7 +12,7 @@
 
 macOS 版本已做 ad-hoc 签名并打包运行库依赖，但没有 Apple Developer ID 公证。如果首次启动被 Gatekeeper 阻止，请用 Control-click / 右键选择 Open/打开。
 
-## Original English README
+## English README
 
 PHD2 Log Viewer
 
